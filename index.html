@@ -3,9 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoadScore</title>
+    <title>RoadScore(Local + Map)</title>
+    
+    <!-- Use Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <!-- Custom Stylesheet -->
+     
+    <link rel="stylesheet" href="style.css">
+
+    
 </head>
 <body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>RoadScore</h1>
+                <p>Report urban issues from your location. (Local Mode)</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="layout-container">
+
+                <!-- Reporting Form -->
+                <div class="column">
+                    <div class="card">
+                        <form id="report-form">
+                            <h2>Submit a New Report</h2>
+                            
+                            <!-- Category -->
+                            <div class="form-group">
+                                <label for="category">Issue Category</label>
+                                <select id="category" name="category" required>
+                                    <option value="">Select a category...</option>
+                                    <option value="Pothole">Pothole</option>
+                                    <option value="Broken Streetlight">Broken Streetlight</option>
+                                    <option value="Trash & Illegal Dumping">Trash & Illegal Dumping</option>
+                                    <option value="Graffiti">Graffiti</option>
+                                    <option value="Damaged Public Property">Damaged Public Property</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Description -->
+                            <div class="form-group">
+                                <label for="description">Description (Optional)</label>
+                                <textarea id="description" name="description" rows="3" placeholder="Add more details..."></textarea>
+                            </div>
+                            
+                            <!-- Location -->
+                            <div class="form-group">
+                                <label>Location Method</label>
+                                <div class="location-method-options">
+                                    <label class="location-method-label">
+                                        <input type="radio" name="locationMethod" value="auto" checked> Auto-detect
+                                    </label>
+                                    <label class="location-method-label">
+                                        <input type="radio" name="locationMethod" value="map"> Pin on Map
+                                    </label>
+                                    <label class="location-method-label">
+                                        <input type="radio" name="locationMethod" value="manual"> Enter Manually
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Location UI Panels -->
+                            <div class="location-panels">
+                                <!-- "Auto" Panel (Get Location Button) -->
+                                <div id="location-method-auto" class="location-method-panel">
+                                    <button type="button" id="get-location-btn">
+                                        <!-- SVG for location pin -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Get My Current Location
+                                    </button>
+                                </div>
+
+                                <!-- "Map Pin" Panel (Instructions) -->
+                                <div id="location-method-map" class="location-method-panel hidden">
+                                    <p id="map-pin-instructions">Click on the map to set the location.</p>
+                                </div>
+                                
+                                <!-- "Manual" Panel (Input Fields) -->
+                                <div id="location-method-manual" class="location-method-panel hidden">
+                                    <div class="manual-input-container">
+                                        <input type="number" id="manual-lat" placeholder="Latitude" step="any" min="-90" max="90">
+                                        <input type="number" id="manual-lon" placeholder="Longitude" step="any" min="-180" max="180">
+                                    </div>
+                                </div>
+
+                                <!-- Shared Location Display -->
+                                <div id="location-display">
+                                    <!-- Location feedback appears here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" id="submit-btn" disabled>
+                                Submit Report
+                            </button>
+                            
+                            <!-- Message Area -->
+                            <div id="message-area"></div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Reports Feed & Map -->
+                <div class="column">
+                    <h2>Live Issue Map</h2>
+                    
+                    <!-- Map Display -->
+                    <div id="map"></div>
+                    
+                    <h2>Recent Reports</h2>
+                    <div id="reports-list">
+                        <!-- Reports will be dynamically injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="script.js"></script>
     
 </body>
 </html>

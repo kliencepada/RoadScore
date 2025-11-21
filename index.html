@@ -17,6 +17,35 @@
         <p>Rate the quality of the road.</p>
         <hr>
     </header>
+    <h3>1. Report Details</h3>
+        
+        <label>Rating:</label><br>
+        <select id="category" required>
+            <option value="">-- Select Rating --</option>
+            <option value="0">0 - Unusable</option>
+            <option value="1">⭐ - Very Poor</option>
+            <option value="2">⭐⭐ - Poor</option>
+            <option value="3">⭐⭐⭐ - Average</option>
+            <option value="4">⭐⭐⭐⭐ - Good</option>
+            <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+        </select>
+        
+        <label>Description:</label><br>
+        <textarea id="description" rows="3" style="width: 100%;" placeholder="What is wrong with the road?"></textarea>
+        <br><br>
+
+        <!-- 2. THE MAP -->
+        <h3>2. Pin Location (Click the map)</h3>
+        <p><i>Tip: Use the layers icon in the top-right of the map to filter by rating!</i></p>
+        <div id="map"></div>
+
+        <!-- 3. SUBMIT BUTTON -->
+        <button type="submit" id="submit-btn" disabled>Submit Report</button>
+        <span id="status-msg" style="color: red; margin-left: 10px;"></span>
+
+        <label>Description:</label><br>
+        <textarea id="description" rows="3" style="width: 100%;" placeholder="What is wrong with the road?"></textarea>
+        <br><br>
 
     <main>
         <div id="map" style="height: 500px; width: 500px;"></div>

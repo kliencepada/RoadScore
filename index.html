@@ -37,7 +37,7 @@
         <!-- 2. THE MAP -->
         <h3>2. Pin Location (Click the map)</h3>
         <p><i>Tip: Use the layers icon in the top-right of the map to filter by rating!</i></p>
-        <div id="map"></div>
+        <div id="map" style="height: 500px; width: 500px;"></div>
 
         <!-- 3. SUBMIT BUTTON -->
         <button type="submit" id="submit-btn" disabled>Submit Report</button>
@@ -47,20 +47,25 @@
         <h3>Recent Reports</h3>
         <div id="reports-list">
         <p>No reports yet.</p>
-    </div>
+        </div>
 
     <main>
-        <div id="map" style="height: 500px; width: 500px;"></div>
-
+        
         <script>
-            // Initialize the map and set its view to a chosen geographical coordinates and a zoom level
-            var map = L.map('map').setView([8.389325532157002, 124.88614918092884], 13);
+            var map;
+            var tempMarker = null;
+            var selectedLat = null;
+            var selectedLng = null;
 
-            // Set up the OSM layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-        </script>
+            
+        var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19, attribution: '© OpenStreetMap'
+        });
+        var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19, attribution: 'Tiles © Esri'
+        });
+
+        
+    </script>
 </body>
 </html>

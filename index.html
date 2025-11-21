@@ -64,7 +64,50 @@
         var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 19, attribution: 'Tiles © Esri'
         });
+// --- 1. SETUP LAYERS ---
 
+        // A. Base Maps (Background)
+        var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19, attribution: '© OpenStreetMap'
+        });
+        var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19, attribution: 'Tiles © Esri'
+        });
+
+        // B. Category Groups (For Filtering)
+        // We create a separate "folder" (LayerGroup) for each rating type
+        var layer0 = L.layerGroup();
+        var layer1 = L.layerGroup();
+        var layer2 = L.layerGroup();
+        var layer3 = L.layerGroup();
+        var layer4 = L.layerGroup();
+        var layer5 = L.layerGroup();
+
+        // Organize them for the Control Box
+        var baseMaps = {
+            "Street View": streetLayer,
+            "Satellite View": satelliteLayer
+        };
+
+        var overlayMaps = {
+            "0 - Unusable": layer0,
+            "⭐ - Very Poor": layer1,
+            "⭐⭐ - Poor": layer2,
+            "⭐⭐⭐ - Average": layer3,
+            "⭐⭐⭐⭐ - Good": layer4,
+            "⭐⭐⭐⭐⭐ - Excellent": layer5
+        };
+
+        map = L.map('map', {
+            center: [8.36, 124.86], // Manolo Fortich
+            zoom: 13,
+            layers: [streetLayer, layer0, layer1, layer2, layer3, layer4, layer5]
+        });
+
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+        
+    </script>
         
     </script>
 </body>

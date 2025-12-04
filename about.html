@@ -26,6 +26,18 @@
             color: var(--text-main);
         }
 
+        /* --- CRITICAL FIX: CONSISTENT NAVBAR HEIGHT --- */
+        /* 1. Remove default vertical padding from the main navbar element */
+        .navbar {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        /* 2. Apply explicit and equal vertical padding to the brand and links for consistent height */
+        .navbar-brand, .navbar-nav .nav-link {
+            padding-top: 0.75rem !important; 
+            padding-bottom: 0.75rem !important;
+        }
+
         .container {
             padding-top: 3rem;
             padding-bottom: 3rem;
@@ -80,26 +92,29 @@
 <body>
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid container">
-            <a class="navbar-brand" href="index.html">RoadScore 🚦</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Reports Map</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="testimonies.html">Testimonies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="about.html">About</a>
-                    </li>
-                </ul>
-            </div>
+    <div class="container-fluid container">
+        
+        <a class="navbar-brand" href="index.html">RoadScore 🚦</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Reports Map</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="testimonies.html">Testimonies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="about.html">About</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
     
     <div class="container">
         <div class="about-section">

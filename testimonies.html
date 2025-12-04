@@ -30,6 +30,18 @@
             color: var(--text-main);
         }
 
+        /* --- CRITICAL FIX: CONSISTENT NAVBAR HEIGHT --- */
+        /* 1. Remove default vertical padding from the main navbar element */
+        .navbar {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        /* 2. Apply explicit and equal vertical padding to the brand and links for consistent height */
+        .navbar-brand, .navbar-nav .nav-link {
+            padding-top: 0.75rem !important; 
+            padding-bottom: 0.75rem !important;
+        }
+
         .container {
             padding-top: 2rem;
             padding-bottom: 2rem;
@@ -37,7 +49,7 @@
         
         /* --- FIX: NAVBAR ACTIVE LINK CONSISTENCY --- */
         /* This forces the active link to fill the entire list item space, 
-           making the blue background consistent with the hover effect. */
+            making the blue background consistent with the hover effect. */
         .navbar-nav .nav-item .nav-link.active {
             background-color: var(--primary-hover); /* Use a slightly darker blue or white to stand out */
             border-radius: 8px; /* Optional: adds a soft border radius */
@@ -140,26 +152,29 @@
 <body>
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid container">
-            <a class="navbar-brand" href="index.html">RoadScore 🚦</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Reports Map</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="testimonies.html">Testimonies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                </ul>
-            </div>
+    <div class="container-fluid container">
+        
+        <a class="navbar-brand" href="index.html">RoadScore 🚦</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Reports Map</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="testimonies.html">Testimonies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
     
     <div class="container">
         <div class="testimony-form-card">
@@ -240,10 +255,13 @@
             const name = document.getElementById('testimony-name').value.trim() || 'Anonymous';
             const content = document.getElementById('testimony-content').value.trim();
             const statusMsg = document.getElementById('status-msg-testimony');
+            const successColor = getComputedStyle(document.documentElement).getPropertyValue('--success-color').trim();
+            const warningColor = getComputedStyle(document.documentElement).getPropertyValue('--warning-color').trim();
+
 
             if (content.length < 10) {
                 statusMsg.innerText = "Please write a longer testimony (min. 10 characters).";
-                statusMsg.style.color = 'var(--critical-color)';
+                statusMsg.style.color = warningColor;
                 return;
             }
 
@@ -264,7 +282,7 @@
             renderTestimonies(); 
 
             statusMsg.innerText = "✅ Testimony submitted successfully!";
-            statusMsg.style.color = 'var(--success-color)';
+            statusMsg.style.color = successColor;
             setTimeout(() => { statusMsg.innerText = ''; }, 3000); 
         });
 

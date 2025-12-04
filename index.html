@@ -17,298 +17,314 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <style>
-        /* CRITICAL FIX: LEAFLET SIZING FIX */
-        .leaflet-container {
-            height: 100%; 
-        }
+    /* CRITICAL FIX: LEAFLET SIZING FIX */
+    .leaflet-container {
+        height: 100%; 
+    }
 
-        /* --- 1. GLOBAL STYLES --- */
-        :root {
-            --primary: #2563eb; 
-            --primary-hover: #1d4ed8;
-            --bg-color: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --star-color: #ffc107; 
-            --success-color: #2ecc71; 
-            --warning-color: #f39c12; 
-            --critical-color: #e74c3c; 
-        }
+    /* --- 1. GLOBAL STYLES --- */
+    :root {
+        --primary: #2563eb; 
+        --primary-hover: #1d4ed8;
+        --bg-color: #f3f4f6;
+        --card-bg: #ffffff;
+        --text-main: #1f2937;
+        --text-muted: #6b7280;
+        --star-color: #ffc107; 
+        --success-color: #2ecc71; 
+        --warning-color: #f39c12; 
+        --critical-color: #e74c3c; 
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* --- FIX: NAVBAR ACTIVE LINK CONSISTENCY (Applied to index.html) --- */
-        .navbar-nav .nav-item .nav-link.active {
-            background-color: var(--primary-hover); 
-            border-radius: 8px; 
-        }
-        .navbar-nav .nav-item {
-            padding: 0 5px;
-        }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* --- CRITICAL FIX: CONSISTENT NAVBAR HEIGHT --- */
+    /* 1. Remove default vertical padding from the main navbar element */
+    .navbar {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    /* 2. Apply explicit and equal vertical padding to the brand and links for consistent height */
+    .navbar-brand, .navbar-nav .nav-link {
+        padding-top: 0.75rem !important; 
+        padding-bottom: 0.75rem !important;
+    }
 
+    /* --- FIX: NAVBAR ACTIVE LINK CONSISTENCY (Applied to index.html) --- */
+    .navbar-nav .nav-item .nav-link.active {
+        background-color: var(--primary-hover); 
+        border-radius: 0px; 
+    }
+    .navbar-nav .nav-item {
+        padding: 0 5px;
+    }
+
+    .app-container {
+        display: flex;
+        flex: 1; 
+        overflow: hidden;
+    }
+
+    /* --- 3. SIDEBAR (Form Area) --- */
+    .sidebar {
+        width: 400px;
+        background: var(--card-bg);
+        padding: 2rem;
+        overflow-y: auto;
+        border-right: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+        z-index: 1000;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+        color: var(--primary);
+        font-weight: 800;
+        margin-bottom: 0.2rem;
+    }
+
+    header p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    hr {
+        border: 0;
+        height: 1px;
+        background: #e5e7eb;
+        margin: 1rem 0;
+    }
+
+    /* --- 4. FORM STYLING --- */
+    h3 {
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 0.8rem;
+        font-weight: 700;
+    }
+
+    label {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+        display: block;
+    }
+
+    select, textarea, input[type="text"], input[type="file"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-family: inherit;
+        margin-bottom: 1rem;
+        transition: border-color 0.2s;
+        background: #f9fafb;
+    }
+
+    select:focus, textarea:focus, input[type="text"]:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    /* --- 5. BUTTON STYLING --- */
+    button#submit-btn {
+        width: 100%;
+        padding: 0.85rem;
+        background-color: var(--success-color); 
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+    }
+
+    button#submit-btn:hover:not(:disabled) {
+        background-color: #27ae60;
+    }
+
+    button:disabled {
+        background-color: #9ca3af;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    #status-msg {
+        display: block;
+        margin-top: 10px;
+        font-size: 0.9rem;
+        text-align: center;
+        font-weight: 600;
+        min-height: 1.2em;
+    }
+
+    /* --- 6. RECENT REPORTS LIST --- */
+    #reports-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .report-item {
+        background: var(--bg-color);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary); 
+        font-size: 0.9rem;
+    }
+    
+    .report-item strong {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+        font-size: 1rem;
+        color: var(--text-main);
+    }
+
+    .report-item .stars {
+        color: var(--star-color);
+        font-size: 1.1rem;
+        margin-right: 8px;
+    }
+
+    .report-item small:last-child {
+        display: block;
+        margin-top: 5px;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+    }
+
+    .report-img {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-top: 8px;
+        border: 1px solid #ddd;
+    }
+    
+    /* Style for the trash icon button */
+    .report-item .btn-sm {
+        line-height: 1; 
+        font-size: 0.8rem;
+    }
+
+    /* --- 7. MAP AREA --- */
+    .map-wrapper {
+        flex: 1;
+        position: relative;
+    }
+
+    #map {
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .map-instructions {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        padding: 8px 16px;
+        border-radius: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 999;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #4b5563;
+        pointer-events: none;
+    }
+
+    .leaflet-popup-content img {
+        max-width: 200px !important; 
+        width: 100%;
+        border-radius: 4px;
+        margin-top: 5px;
+    }
+    
+    .leaflet-marker-icon {
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        border: 2px solid white;
+    }
+
+    /* --- 8. RESPONSIVE (MOBILE) --- */
+    @media (max-width: 900px) {
         .app-container {
-            display: flex;
-            flex: 1; 
-            overflow: hidden;
+            flex-direction: column-reverse; 
+            height: auto;
+            min-height: 100vh;
         }
 
-        /* --- 3. SIDEBAR (Form Area) --- */
         .sidebar {
-            width: 400px;
-            background: var(--card-bg);
-            padding: 2rem;
-            overflow-y: auto;
-            border-right: 1px solid #e5e7eb;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.05);
-            z-index: 1000;
-        }
-
-        header h1 {
-            font-size: 1.8rem;
-            color: var(--primary);
-            font-weight: 800;
-            margin-bottom: 0.2rem;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        hr {
-            border: 0;
-            height: 1px;
-            background: #e5e7eb;
-            margin: 1rem 0;
-        }
-
-        /* --- 4. FORM STYLING --- */
-        h3 {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 0.8rem;
-            font-weight: 700;
-        }
-
-        label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-            display: block;
-        }
-
-        select, textarea, input[type="text"], input[type="file"] {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-family: inherit;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s;
-            background: #f9fafb;
+            height: auto;
+            overflow: visible;
+            border-right: none;
+            border-top: 1px solid #e5e7eb;
         }
 
-        select:focus, textarea:focus, input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        /* --- 5. BUTTON STYLING --- */
-        button#submit-btn {
-            width: 100%;
-            padding: 0.85rem;
-            background-color: var(--success-color); 
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-
-        button#submit-btn:hover:not(:disabled) {
-            background-color: #27ae60;
-        }
-
-        button:disabled {
-            background-color: #9ca3af;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        #status-msg {
-            display: block;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            text-align: center;
-            font-weight: 600;
-            min-height: 1.2em;
-        }
-
-        /* --- 6. RECENT REPORTS LIST --- */
-        #reports-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .report-item {
-            background: var(--bg-color);
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary); 
-            font-size: 0.9rem;
-        }
-        
-        .report-item strong {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4px;
-            font-size: 1rem;
-            color: var(--text-main);
-        }
-
-        .report-item .stars {
-            color: var(--star-color);
-            font-size: 1.1rem;
-            margin-right: 8px;
-        }
-
-        .report-item small:last-child {
-            display: block;
-            margin-top: 5px;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-
-        .report-img {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 6px;
-            margin-top: 8px;
-            border: 1px solid #ddd;
-        }
-        
-        /* Style for the trash icon button */
-        .report-item .btn-sm {
-            line-height: 1; 
-            font-size: 0.8rem;
-        }
-
-        /* --- 7. MAP AREA --- */
         .map-wrapper {
-            flex: 1;
-            position: relative;
+            height: 50vh; 
+            flex: none;
         }
-
-        #map {
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .map-instructions {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px 16px;
-            border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 999;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #4b5563;
-            pointer-events: none;
-        }
-
-        .leaflet-popup-content img {
-            max-width: 200px !important; 
-            width: 100%;
-            border-radius: 4px;
-            margin-top: 5px;
-        }
-        
-        .leaflet-marker-icon {
-            border-radius: 50%;
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
-            border: 2px solid white;
-        }
-
-        /* --- 8. RESPONSIVE (MOBILE) --- */
-        @media (max-width: 900px) {
-            .app-container {
-                flex-direction: column-reverse; 
-                height: auto;
-                min-height: 100vh;
-            }
-
-            .sidebar {
-                width: 100%;
-                height: auto;
-                overflow: visible;
-                border-right: none;
-                border-top: 1px solid #e5e7eb;
-            }
-
-            .map-wrapper {
-                height: 50vh; 
-                flex: none;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
+
 <body>
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid container">
-            <a class="navbar-brand" href="index.html">RoadScore 🚦</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Reports Map</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="testimonies.html">Testimonies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                </ul>
-            </div>
+    <div class="container-fluid container">
+        
+        <a class="navbar-brand" href="index.html">RoadScore 🚦</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="index.html">Reports Map</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="testimonies.html">Testimonies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
     
     <div class="app-container">
         
@@ -418,20 +434,40 @@
     </div>
 
     <script>
+        const REPORTS_STORAGE_KEY = 'roadscore_reports'; // 💡 NEW: Storage key for reports
+
         var map;
         var tempMarker = null;
         var selectedLat = null;
         var selectedLng = null;
         
-        // Global variable to store the ID of the report currently being deleted
         var currentDeleteReportId = null;
 
-        // Storage for all reports, keyed by a unique ID, to manage deletion
+        // Storage for all reports: now loaded from localStorage on start
         var reports = {}; 
-        var reportCounter = 0; 
+        var reportCounter = 0; // Will be updated to the max ID from loaded reports
+
+        // --- Local Storage Functions ---
+        function loadReports() {
+            const storedReports = localStorage.getItem(REPORTS_STORAGE_KEY);
+            let loadedReports = storedReports ? JSON.parse(storedReports) : {};
+
+            // Update reportCounter to prevent duplicate IDs after page refresh
+            let maxId = 0;
+            if (Object.keys(loadedReports).length > 0) {
+                // Find the highest ID among all loaded reports
+                maxId = Math.max(...Object.keys(loadedReports).map(id => parseInt(id)));
+            }
+            reportCounter = maxId;
+
+            return loadedReports;
+        }
+
+        function saveReports(reportsObject) {
+            localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(reportsObject));
+        }
 
         // --- Helper Functions ---
-        
         function getStarRating(value) {
             const num = parseInt(value);
             if (num === 0) return '0 - Unusable';
@@ -466,16 +502,77 @@
                 popupAnchor: [0, -12.5]
             });
         }
+
+        // --- New Render Function to populate map and sidebar on load ---
+        function renderReportsListAndMap(reportsToRender) {
+            const listElement = document.getElementById('reports-list');
+            listElement.innerHTML = ''; 
+            let hasReports = false;
+
+            // Iterate through the reports object (which is stored by ID)
+            for (const reportId in reportsToRender) {
+                if (reportsToRender.hasOwnProperty(reportId)) {
+                    hasReports = true;
+                    const reportData = reportsToRender[reportId];
+                    const reportColor = getRatingColor(reportData.rating);
+                    const categoryStars = getStarRating(reportData.rating);
+                    const layerIndex = parseInt(reportData.rating);
+                    const targetLayer = layers[layerIndex];
+
+                    // 1. Add Marker to Map
+                    const finalIcon = createRoadIcon(reportData.rating);
+                    const finalMarker = L.marker([reportData.lat, reportData.lng], { icon: finalIcon });
+                    targetLayer.addLayer(finalMarker); 
+                    
+                    // Store marker/layer references for deletion/lookup later
+                    reportData.marker = finalMarker;
+                    reportData.layer = targetLayer;
+                    
+                    // Prepare Popup content
+                    let popupContent = "<b>Rating: " + categoryStars + "</b><br>" + reportData.description;
+                    if(reportData.imageUrl) {
+                        popupContent += "<br><img src='" + reportData.imageUrl + "' alt='Road condition photo'>";
+                    }
+                    finalMarker.bindPopup(popupContent);
+                    
+                    // 2. Add Item to Sidebar List
+                    const imgHTML = reportData.imageUrl ? `<img src="${reportData.imageUrl}" class="report-img">` : '';
+
+                    const newReportDiv = document.createElement('div');
+                    newReportDiv.className = "report-item";
+                    newReportDiv.id = `report-${reportId}`;
+                    newReportDiv.style.borderLeftColor = reportColor;
+                    newReportDiv.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong><span class="stars">${categoryStars}</span> Road Score</strong> 
+                            <button onclick="window.deleteReport(${reportId})" class="btn btn-sm p-0 text-muted" title="Delete Report" style="border:none; background:transparent;">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                        <div style="margin-bottom:5px;">${reportData.description}</div>
+                        <small>Report ID: ${reportId}</small>
+                        ${imgHTML}
+                        <small>Location: ${reportData.lat.toFixed(4)}, ${reportData.lng.toFixed(4)}</small>
+                        <small>${new Date(reportData.timestamp).toLocaleTimeString()}</small>
+                    `;
+                    listElement.prepend(newReportDiv); 
+                }
+            }
+
+            if (!hasReports) {
+                listElement.innerHTML = '<p style="color: #999; font-style: italic;">No reports yet.</p>';
+            }
+        }
         
-        // --- NEW DELETE FUNCTION - Opens Modal ---
+        // --- DELETE FUNCTION - Opens Modal ---
         window.deleteReport = function(reportId) {
-            currentDeleteReportId = reportId; // Store the ID globally
+            currentDeleteReportId = reportId;
             document.getElementById('modal-report-id').innerText = `#${reportId}`;
 
             // Reset modal form fields
             document.getElementById('delete-reason-form').reset();
             document.getElementById('otherReasonText').value = '';
-            document.getElementById('otherReasonText').disabled = true; // Disable text area initially
+            document.getElementById('otherReasonText').disabled = true;
 
             // Hide any previous error message
             document.getElementById('other-reason-error').style.display = 'none';
@@ -494,9 +591,9 @@
                     otherTextarea.focus();
                 } else {
                     otherTextarea.disabled = true;
-                    otherTextarea.value = ''; // Clear text if switching away from Other
+                    otherTextarea.value = '';
                 }
-                 document.getElementById('other-reason-error').style.display = 'none';
+                document.getElementById('other-reason-error').style.display = 'none';
             });
         });
 
@@ -508,7 +605,6 @@
             const reportId = currentDeleteReportId;
             if (!reportId || !reports[reportId]) return;
 
-            // Get selected radio button value
             const selectedRadio = document.querySelector('input[name="deleteReason"]:checked');
             let finalReason = selectedRadio ? selectedRadio.value : 'No Reason Selected';
             
@@ -516,14 +612,12 @@
             if (finalReason === 'Other') {
                 const customText = document.getElementById('otherReasonText').value.trim();
                 if (!customText) {
-                    // Show error and STOP submission if 'Other' is checked but text is empty
                     document.getElementById('other-reason-error').style.display = 'block';
                     return; 
                 }
                 finalReason = `Other: ${customText}`;
             }
 
-            // Hide the modal only after successful validation
             var deleteModalInstance = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
             deleteModalInstance.hide(); 
 
@@ -542,8 +636,9 @@
             // 3. Log the deletion reason
             console.log(`Report ${reportId} deleted. Reason: ${finalReason}`);
 
-            // 4. Remove from the local data object
+            // 4. Remove from the local data object and SAVE
             delete reports[reportId];
+            saveReports(reports); // 💡 CRITICAL FIX: Save after deletion
             
             // Show "No reports yet" message if the list is empty
             const list = document.getElementById('reports-list');
@@ -554,47 +649,61 @@
             // 5. Update the status message
             document.getElementById('status-msg').innerText = `🗑️ Report ${reportId} deleted. Reason: ${finalReason}`;
             document.getElementById('status-msg').style.color = getRatingColor(0); 
-            currentDeleteReportId = null; // Clear ID after deletion
+            currentDeleteReportId = null; 
+            
+            // Clear status message after 5 seconds
+            setTimeout(() => { document.getElementById('status-msg').innerText = "🗺️ Map loaded. Click to pin a location.";
+            document.getElementById('status-msg').style.color = getRatingColor(3);}, 5000);
         });
 
 
-        // --- Map Setup ---
+        // ------------------------------------------------------------------
+        // --- MAP SETUP & INITIALIZATION ---
+        // ------------------------------------------------------------------
+
+        // --- Map Base Layers ---
         var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19, attribution: '© OpenStreetMap'
         });
         var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 19, attribution: 'Tiles © Esri'
         });
-        // Define all layer groups
-        var layer0 = L.layerGroup();
-        var layer1 = L.layerGroup();
-        var layer2 = L.layerGroup();
-        var layer3 = L.layerGroup();
-        var layer4 = L.layerGroup();
-        var layer5 = L.layerGroup();
+
+        // --- Overlay Layer Groups (For Filtering by Rating) ---
+        var layer0 = L.layerGroup(); 
+        var layer1 = L.layerGroup(); 
+        var layer2 = L.layerGroup(); 
+        var layer3 = L.layerGroup(); 
+        var layer4 = L.layerGroup(); 
+        var layer5 = L.layerGroup(); 
         
-        // Array of layer groups for easier access
+        // Array of layer groups for easier access (Index 0 to 5)
         const layers = [layer0, layer1, layer2, layer3, layer4, layer5];
 
+        // --- Initialize Map ---
+        const initialCenter = [8.36, 124.86]; 
+        const initialZoom = 13; 
+
+        map = L.map('map', {
+            center: initialCenter,
+            zoom: initialZoom,
+            layers: [streetLayer, layer0, layer1, layer2, layer3, layer4, layer5] 
+        });
+
+        // --- Layer Controls for Map Filtering ---
         var baseMaps = {
-            "Street View": streetLayer,
-            "Satellite View": satelliteLayer
+            "OpenStreetMap": streetLayer,
+            "Esri Satellite": satelliteLayer
         };
 
         var overlayMaps = {
-            "0 - Unusable": layer0,
-            "⭐ - Very Poor": layer1,
-            "⭐⭐ - Poor": layer2,
-            "⭐⭐⭐ - Average": layer3,
-            "⭐⭐⭐⭐ - Good": layer4,
-            "⭐⭐⭐⭐⭐ - Excellent": layer5
+            "0 (Critical)": layer0,
+            "⭐ (Very Poor)": layer1,
+            "⭐⭐ (Poor)": layer2,
+            "⭐⭐⭐ (Average)": layer3,
+            "⭐⭐⭐⭐ (Good)": layer4,
+            "⭐⭐⭐⭐⭐ (Excellent)": layer5
         };
-
-        map = L.map('map', {
-            center: [8.36, 124.86],
-            zoom: 13,
-            layers: [streetLayer, layer0, layer1, layer2, layer3, layer4, layer5]
-        });
 
         L.control.layers(baseMaps, overlayMaps).addTo(map);
         
@@ -604,8 +713,9 @@
             document.getElementById('status-msg').innerText = "🗺️ Map loaded. Click to pin a location.";
         }, 100); 
 
-        // --- Event Listeners ---
-
+        // ------------------------------------------------------------------
+        // --- MAP CLICK HANDLER TO PIN LOCATION ---
+        // ------------------------------------------------------------------
         map.on('click', function(e) {
             selectedLat = e.latlng.lat;
             selectedLng = e.latlng.lng;
@@ -615,13 +725,16 @@
             }
             
             tempMarker = L.marker([selectedLat, selectedLng], { icon: createTempIcon() }).addTo(map);
-            tempMarker.bindPopup("Selected Location").openPopup();
+            tempMarker.bindPopup("Location Pinned! Submit your report.").openPopup();
 
             document.getElementById('submit-btn').disabled = false;
-            document.getElementById('status-msg').innerText = "📍 Location ready. Select rating and submit.";
-            document.getElementById('status-msg').style.color = getRatingColor(2);
+            document.getElementById('status-msg').innerText = "📍 Location pinned at " + selectedLat.toFixed(4) + ", " + selectedLng.toFixed(4) + ". Select rating and submit.";
+            document.getElementById('status-msg').style.color = getRatingColor(3);
         });
-        
+
+        // ------------------------------------------------------------------
+        // --- FORM SUBMISSION HANDLER (Updated to save to Local Storage) ---
+        // ------------------------------------------------------------------
         document.getElementById('report-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -630,6 +743,7 @@
             var reportColor = getRatingColor(categoryValue);
             var desc = document.getElementById('description').value;
             var imageFile = document.getElementById('imageInput').files[0];
+            const timestamp = new Date().toISOString(); // Timestamp for logging/sorting
 
             if (!selectedLat || !selectedLng) {
                 document.getElementById('status-msg').innerText = "ERROR: Please pin a location on the map first.";
@@ -644,69 +758,49 @@
             }
 
             function processSubmission(imageUrl) {
-                const reportId = ++reportCounter; // Generate unique ID
+                const reportId = (++reportCounter).toString(); // Use string for object key
                 
-                // Get target layer group based on rating (categoryValue is a string, needs to be parsed)
-                const layerIndex = parseInt(categoryValue);
-                const targetLayer = layers[layerIndex];
-                
-                // 1. Add Marker to Map
-                if (tempMarker) {
-                    map.removeLayer(tempMarker);
-                }
-                var finalIcon = createRoadIcon(categoryValue);
-                var finalMarker = L.marker([selectedLat, selectedLng], { icon: finalIcon });
-                targetLayer.addLayer(finalMarker);
-                
-                // Store marker and layer data for later deletion
-                reports[reportId] = {
-                    marker: finalMarker,
-                    layer: targetLayer
+                // 💡 NEW: Create the full report object for storage
+                const newReport = {
+                    id: reportId,
+                    rating: categoryValue,
+                    description: desc,
+                    lat: selectedLat,
+                    lng: selectedLng,
+                    imageUrl: imageUrl,
+                    timestamp: timestamp
                 };
                 
-                // Prepare Popup content
-                var popupContent = "<b>Rating: " + categoryStars + "</b><br>" + desc;
-                if(imageUrl) {
-                    popupContent += "<br><img src='" + imageUrl + "' alt='Road condition photo'>";
-                }
-                finalMarker.bindPopup(popupContent);
-
-                // 2. Add to Sidebar List (and apply color to border)
-                var list = document.getElementById('reports-list');
-                if (list.innerHTML.includes("No reports yet")) {
-                    list.innerHTML = "";
-                }
-
-                var imgHTML = imageUrl ? `<img src="${imageUrl}" class="report-img">` : '';
-
-                var newReportDiv = document.createElement('div');
-                newReportDiv.className = "report-item";
-                newReportDiv.id = `report-${reportId}`; // Assign unique ID to the list item
-                newReportDiv.style.borderLeftColor = reportColor;
-                newReportDiv.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center">
-                        <strong><span class="stars">${categoryStars}</span> Road Score</strong> 
-                        <button onclick="window.deleteReport(${reportId})" class="btn btn-sm p-0 text-muted" title="Delete Report" style="border:none; background:transparent;">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </div>
-                    <div style="margin-bottom:5px;">${desc}</div>
-                    <small>Report ID: ${reportId}</small>
-                    ${imgHTML}
-                    <small>Location: ${selectedLat.toFixed(4)}, ${selectedLng.toFixed(4)}</small>
-                    <small>${new Date().toLocaleTimeString()}</small>
-                `;
+                // 1. Save the new report to the global object and Local Storage
+                reports[reportId] = newReport;
+                saveReports(reports); // 💡 CRITICAL FIX: Save to Local Storage!
                 
-                list.prepend(newReportDiv);
+                // 2. Clear map and list elements before re-rendering (easier than updating)
+                // Remove all markers from layers first
+                layers.forEach(layer => layer.clearLayers());
+                document.getElementById('reports-list').innerHTML = '';
+
+                // 3. Re-render the map and list with the updated 'reports' object
+                renderReportsListAndMap(reports);
                 
-                // 3. Reset everything
+                // 4. Reset form state
+                if (tempMarker) {
+                    map.removeLayer(tempMarker);
+                    tempMarker = null;
+                }
+                
                 document.getElementById('report-form').reset();
                 document.getElementById('submit-btn').disabled = true;
-                document.getElementById('status-msg').innerText = "✅ Report submitted successfully!";
+                document.getElementById('status-msg').innerText = "✅ Report submitted successfully! ID: " + reportId;
                 document.getElementById('status-msg').style.color = getRatingColor(4);
 
                 selectedLat = null;
                 selectedLng = null;
+                
+                setTimeout(() => { 
+                    document.getElementById('status-msg').innerText = "🗺️ Map loaded. Click to pin a location.";
+                    document.getElementById('status-msg').style.color = getRatingColor(3);
+                }, 5000);
             }
 
             // Image handling logic
@@ -721,6 +815,18 @@
                 processSubmission(null);
             }
         });
+
+        // ------------------------------------------------------------------
+        // --- INITIAL LOAD LOGIC ---
+        // ------------------------------------------------------------------
+        window.onload = function() {
+            // Load persistent reports from Local Storage
+            reports = loadReports(); 
+
+            // Initialize the Map and render the persistent reports onto it and the sidebar
+            // This happens after the map object 'map' is fully created above.
+            renderReportsListAndMap(reports);
+        };
     </script>
 </body>
 </html>

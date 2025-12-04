@@ -509,6 +509,9 @@
             listElement.innerHTML = ''; 
             let hasReports = false;
 
+            // Clear all current layers before re-rendering
+            layers.forEach(layer => layer.clearLayers());
+
             // Iterate through the reports object (which is stored by ID)
             for (const reportId in reportsToRender) {
                 if (reportsToRender.hasOwnProperty(reportId)) {
@@ -517,7 +520,8 @@
                     const reportColor = getRatingColor(reportData.rating);
                     const categoryStars = getStarRating(reportData.rating);
                     const layerIndex = parseInt(reportData.rating);
-                    const targetLayer = layers[layerIndex];
+                    // Ensure the layer index is valid (0-5)
+                    const targetLayer = layers[layerIndex] || layers[0]; 
 
                     // 1. Add Marker to Map
                     const finalIcon = createRoadIcon(reportData.rating);
@@ -642,7 +646,8 @@
             
             // Show "No reports yet" message if the list is empty
             const list = document.getElementById('reports-list');
-            if (list.children.length === 0) {
+            // Check if only the 'No reports yet' placeholder remains
+            if (Object.keys(reports).length === 0) {
                  list.innerHTML = '<p style="color: #999; font-style: italic;">No reports yet.</p>';
             }
 
@@ -684,7 +689,7 @@
         const initialCenter = [8.36, 124.86]; 
         const initialZoom = 13; 
 
-        map = L.map('map', {
+        var map = L.map('map', {
             center: initialCenter,
             zoom: initialZoom,
             layers: [streetLayer, layer0, layer1, layer2, layer3, layer4, layer5] 
@@ -711,6 +716,7 @@
         setTimeout(function() {
             map.invalidateSize();
             document.getElementById('status-msg').innerText = "🗺️ Map loaded. Click to pin a location.";
+            document.getElementById('status-msg').style.color = getRatingColor(3);
         }, 100); 
 
         // ------------------------------------------------------------------
@@ -776,10 +782,8 @@
                 saveReports(reports); // 💡 CRITICAL FIX: Save to Local Storage!
                 
                 // 2. Clear map and list elements before re-rendering (easier than updating)
-                // Remove all markers from layers first
-                layers.forEach(layer => layer.clearLayers());
-                document.getElementById('reports-list').innerHTML = '';
-
+                // We re-render via renderReportsListAndMap, which clears and re-draws the map/list
+                
                 // 3. Re-render the map and list with the updated 'reports' object
                 renderReportsListAndMap(reports);
                 
@@ -823,10 +827,10 @@
             // Load persistent reports from Local Storage
             reports = loadReports(); 
 
-            // Initialize the Map and render the persistent reports onto it and the sidebar
-            // This happens after the map object 'map' is fully created above.
-            renderReportsListAndMap(reports);
-        };
+            // Initial render to display existing reports on the map and sidebar
+            renderReportsListAndMap(reports); 
+        }; // <--- THIS WAS THE MISSING CLOSING BRACKET AND PARENTHESIS!
+
     </script>
 </body>
 </html>
